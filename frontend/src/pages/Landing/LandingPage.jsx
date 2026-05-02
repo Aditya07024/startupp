@@ -6,7 +6,6 @@ const creatorTools = [
   "AI Content",
   "Repurpose Studio",
   "Connected Accounts",
-  "Inbox",
   "Analytics",
   "Trend Radar",
   "Competitor Watch",
@@ -22,7 +21,6 @@ const creatorTools = [
 const brandTools = [
   "Campaign Management",
   "Creator Applications",
-  "Inbox",
   "Deals",
   "Trend Radar",
   "Competitor Watch",
@@ -74,7 +72,7 @@ export default function LandingPage() {
     <div className="landing-page">
       <header className="landing-nav">
         <Link to="/" className="landing-brand">
-          <img src="/logo.png" alt="ViralBoost AI" className="landing-brand-image" />
+          <img src="/logo-cropped.png" alt="ViralBoost AI" className="landing-brand-image" />
           <span>ViralBoost AI</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
@@ -98,7 +96,7 @@ export default function LandingPage() {
             </h1>
             <p className="landing-subtitle">
               ViralBoost AI combines AI content generation, analytics, connected accounts, scheduling, trend tracking,
-              brand deals, referrals, wallets, inbox, and campaign management into a single product.
+              brand deals, referrals, wallets, and campaign management into a single product.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link to={primaryHref} className="btn-primary">{primaryLabel}</Link>
@@ -151,7 +149,7 @@ export default function LandingPage() {
                   <ul>
                     <li>Campaign creation</li>
                     <li>Application review</li>
-                    <li>Inbox and spend tracking</li>
+                    <li>Spend and deal tracking</li>
                   </ul>
                 </div>
               </div>

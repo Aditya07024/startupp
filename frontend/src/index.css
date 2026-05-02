@@ -158,10 +158,9 @@ a {
 .sidebar-logo-image {
   width: 32px;
   height: 32px;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 3px;
+  background: transparent;
 }
 
 .sidebar-logo-text {
@@ -324,11 +323,9 @@ a {
 .auth-brand-image {
   width: 64px;
   height: 64px;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 8px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+  background: transparent;
 }
 
 .auth-showcase-orb {
@@ -517,12 +514,11 @@ a {
 }
 
 .landing-brand-image {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 4px;
+  background: transparent;
 }
 
 .landing-hero,

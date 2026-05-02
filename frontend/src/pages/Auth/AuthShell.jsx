@@ -37,7 +37,7 @@ export default function AuthShell({ title, subtitle, children }) {
               </span>
               <div>
                 <div className="flex items-center gap-4">
-                  <img src="/logo.png" alt="ViralBoost AI" className="auth-brand-image" />
+                  <img src="/logo-cropped.png" alt="ViralBoost AI" className="auth-brand-image" />
                   <p className="font-display text-5xl font-black leading-[0.95] tracking-[-0.04em] text-white">
                     ViralBoost AI
                   </p>

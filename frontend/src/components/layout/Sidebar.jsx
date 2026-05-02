@@ -9,7 +9,6 @@ const linksByRole = {
       ["AI Content", "/ai-content"],
       ["Repurpose Studio", "/repurpose"],
       ["Connected Accounts", "/connected-accounts"],
-      ["Inbox", "/inbox", "3"],
     ],
     Grow: [
       ["Analytics", "/analytics"],
@@ -33,7 +32,6 @@ const linksByRole = {
       ["Dashboard", "/dashboard/brand"],
       ["Campaigns", "/campaigns"],
       ["Connected Accounts", "/connected-accounts"],
-      ["Inbox", "/inbox", "3"],
     ],
     Grow: [
       ["Trend Radar", "/trend-radar"],
@@ -73,7 +71,7 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <img src="/logo.png" alt="ViralBoost AI" className="sidebar-logo-image" />
+        <img src="/logo-icon.png" alt="ViralBoost AI" className="sidebar-logo-image" />
         <span className="sidebar-logo-text">ViralBoost</span>
       </div>
       <nav style={{ flex: 1, overflowY: "auto", padding: "8px 0" }}>
