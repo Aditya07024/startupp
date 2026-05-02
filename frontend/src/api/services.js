@@ -44,6 +44,7 @@ export const dealsApi = {
 
 export const campaignsApi = {
   create: (payload) => api.post("/campaigns", payload),
+  dashboard: () => api.get("/campaigns/dashboard"),
   my: () => api.get("/campaigns/my"),
   update: (id, payload) => api.patch(`/campaigns/${id}`, payload),
 };

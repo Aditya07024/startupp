@@ -5,39 +5,35 @@ import StatsCard from "../../components/charts/StatsCard";
 import BarMetricsChart from "../../components/charts/BarMetricsChart";
 import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
-import { campaignsApi, dealsApi } from "../../api/services";
+import { campaignsApi } from "../../api/services";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 export default function BrandDashboard() {
   const [campaigns, setCampaigns] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    Promise.all([campaignsApi.my(), dealsApi.applications()]).then(([c, a]) => {
-      setCampaigns(c.data.campaigns);
-      setApplications(a.data.applications);
+    campaignsApi.dashboard().then((response) => {
+      setCampaigns(response.data.data.campaigns || []);
+      setApplications(response.data.data.applications || []);
+      setStats(response.data.data.stats || null);
+      setChartData(response.data.data.chart || []);
     }).catch(() => {});
   }, []);
-
-  const budgetSpent = campaigns.reduce((sum, item) => sum + (item.budget || 0), 0);
-  const brandBarData = [
-    { label: "Campaigns", value: campaigns.length },
-    { label: "Applications", value: applications.length },
-    { label: "Reach", value: 241 },
-    { label: "Budget", value: Math.round(budgetSpent || 0) },
-  ];
 
   return (
     <PageWrapper>
       <Header title="Brand Dashboard" subtitle="Campaign throughput, creator pipeline, and spend efficiency in one view." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatsCard label="Active Campaigns" value={campaigns.length} change={11.2} />
-        <StatsCard label="Total Applications" value={applications.length} change={7.9} />
-        <StatsCard label="Total Reach" value="241K" change={18.3} />
-        <StatsCard label="Budget Spent" value={formatCurrency(budgetSpent)} change={5.4} />
+        <StatsCard label="Active Campaigns" value={stats?.activeCampaigns || 0} />
+        <StatsCard label="Total Applications" value={stats?.totalApplications || 0} />
+        <StatsCard label="Total Reach" value={(stats?.totalReach || 0).toLocaleString()} />
+        <StatsCard label="Budget Spent" value={formatCurrency(stats?.budgetSpent || 0)} />
       </div>
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <BarMetricsChart title="Brand Campaign Snapshot" data={brandBarData} />
+        <BarMetricsChart title="Brand Campaign Snapshot" data={chartData} />
         <Card className="p-5">
           <h2 className="font-display text-xl font-semibold">My Campaigns</h2>
           <div className="mt-5 space-y-4">

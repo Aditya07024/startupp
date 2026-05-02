@@ -22,21 +22,15 @@ export default function AdminDashboard() {
     <PageWrapper>
       <Header title="Admin Dashboard" subtitle="Platform health, user growth, campaign activity, and revenue command center." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <StatsCard label="Total Users" value={dashboard?.totalUsers || 0} change={8.6} />
-        <StatsCard label="Creators" value={dashboard?.creators || 0} change={12.1} />
-        <StatsCard label="Brands" value={dashboard?.brands || 0} change={5.2} />
-        <StatsCard label="Revenue" value={formatCurrency(dashboard?.revenue)} change={13.4} />
-        <StatsCard label="Payouts" value={formatCurrency(dashboard?.payouts)} change={4.7} />
-        <StatsCard label="Active Campaigns" value={dashboard?.activeCampaigns || 0} change={6.3} />
+        <StatsCard label="Total Users" value={dashboard?.totalUsers || 0} />
+        <StatsCard label="Creators" value={dashboard?.creators || 0} />
+        <StatsCard label="Brands" value={dashboard?.brands || 0} />
+        <StatsCard label="Revenue" value={formatCurrency(dashboard?.revenue || 0)} />
+        <StatsCard label="Payouts" value={formatCurrency(dashboard?.payouts || 0)} />
+        <StatsCard label="Active Campaigns" value={dashboard?.activeCampaigns || 0} />
       </div>
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <GrowthChart data={[
-          { month: "Jan", instagram: 22, facebook: 14, youtube: 18 },
-          { month: "Feb", instagram: 31, facebook: 19, youtube: 24 },
-          { month: "Mar", instagram: 46, facebook: 28, youtube: 33 },
-          { month: "Apr", instagram: 58, facebook: 35, youtube: 40 },
-          { month: "May", instagram: 79, facebook: 44, youtube: 57 },
-        ]} />
+        <GrowthChart data={dashboard?.growthData || []} />
         <Card className="p-5">
           <h2 className="font-display text-xl font-semibold">Recent Users</h2>
           <div className="mt-5 space-y-4">

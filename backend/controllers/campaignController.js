@@ -1,4 +1,5 @@
 import Campaign from "../models/Campaign.js";
+import BrandDeal from "../models/BrandDeal.js";
 import User from "../models/User.js";
 
 export const createCampaign = async (req, res) => {
@@ -20,6 +21,42 @@ export const getMyCampaigns = async (req, res) => {
       }))
     );
     res.json({ success: true, campaigns: enriched });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getBrandDashboard = async (req, res) => {
+  try {
+    const [campaigns, applications] = await Promise.all([
+      Campaign.find({ brandId: req.user.id }).sort({ createdAt: -1 }),
+      BrandDeal.find({ brandId: req.user.id })
+        .populate("creatorId", "name avatar email isVerified")
+        .populate("campaignId", "title budget"),
+    ]);
+
+    const budgetSpent = campaigns.reduce((sum, item) => sum + (item.budget || 0), 0);
+    const totalReach = campaigns.reduce((sum, item) => sum + (item.reach || 0), 0);
+
+    res.json({
+      success: true,
+      data: {
+        stats: {
+          activeCampaigns: campaigns.filter((campaign) => ["open", "active"].includes(campaign.status)).length,
+          totalApplications: applications.length,
+          totalReach,
+          budgetSpent,
+        },
+        chart: [
+          { label: "Campaigns", value: campaigns.length },
+          { label: "Applications", value: applications.length },
+          { label: "Reach", value: totalReach },
+          { label: "Budget", value: Math.round(budgetSpent || 0) },
+        ],
+        campaigns,
+        applications,
+      },
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

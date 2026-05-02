@@ -1,6 +1,13 @@
 import User from "../models/User.js";
 
 const defaultMetrics = { followers: 0, engagement: 0, reach: 0, views: 0, change: 0 };
+const platformColors = {
+  instagram: "#E1306C",
+  youtube: "#FF0000",
+  facebook: "#1877F2",
+};
+
+const formatPlatformName = (platform = "") => platform.charAt(0).toUpperCase() + platform.slice(1);
 
 const buildHistory = (socialAccounts) => {
   const labels = ["W1", "W2", "W3", "W4", "W5", "W6"];
@@ -11,6 +18,22 @@ const buildHistory = (socialAccounts) => {
       point[platformKey] = social?.metrics?.history?.[index]?.followers || 0;
     }
     return point;
+  });
+};
+
+const buildTopPlatforms = (socialAccounts) => {
+  const connected = socialAccounts.filter((account) => account.isConnected);
+  const totalFollowers = connected.reduce((sum, account) => sum + (account.metrics?.followers || 0), 0);
+
+  return connected.map((account) => {
+    const followers = account.metrics?.followers || 0;
+    const value = totalFollowers > 0 ? Math.round((followers / totalFollowers) * 100) : 0;
+    return {
+      name: formatPlatformName(account.platform),
+      key: account.platform,
+      value,
+      color: platformColors[account.platform] || "#94A3B8",
+    };
   });
 };
 
@@ -33,12 +56,24 @@ export const getOverview = async (req, res) => {
         ];
       })
     );
+    const primaryPlatform = socialAccounts.find((account) => account.platform === "instagram" && account.isConnected)
+      || socialAccounts.find((account) => account.isConnected)
+      || null;
+    const topPlatforms = buildTopPlatforms(socialAccounts);
 
     res.json({
       success: true,
       data: {
         ...byPlatform,
+        summary: {
+          followers: primaryPlatform?.metrics?.followers || 0,
+          engagement: primaryPlatform?.metrics?.engagement || 0,
+          impressions: primaryPlatform?.metrics?.reach || 0,
+          profileVisits: primaryPlatform?.metrics?.views || 0,
+          followerChange: primaryPlatform?.metrics?.change || 0,
+        },
         growthHistory: buildHistory(socialAccounts),
+        topPlatforms,
         sources: socialAccounts.map((account) => ({
           platform: account.platform,
           handle: account.handle,
@@ -56,27 +91,20 @@ export const getBestTime = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("socialAccounts");
     const connectedPlatforms = (user?.socialAccounts || []).filter((account) => account.isConnected);
-    const bestTimes = connectedPlatforms.length
-      ? connectedPlatforms.map((account) => ({
-          platform: account.platform.charAt(0).toUpperCase() + account.platform.slice(1),
-          slot:
-            account.platform === "instagram"
-              ? "7:30 PM - 9:00 PM"
-              : account.platform === "facebook"
-                ? "1:00 PM - 3:00 PM"
-                : "6:00 PM - 8:00 PM",
-        }))
-      : [
-          { platform: "Instagram", slot: "7:30 PM - 9:00 PM" },
-          { platform: "Facebook", slot: "1:00 PM - 3:00 PM" },
-          { platform: "YouTube", slot: "6:00 PM - 8:00 PM" },
-        ];
+    const bestTimes = connectedPlatforms.map((account) => ({
+      platform: formatPlatformName(account.platform),
+      slot:
+        account.platform === "instagram"
+          ? "7:30 PM - 9:00 PM"
+          : account.platform === "facebook"
+            ? "1:00 PM - 3:00 PM"
+            : "6:00 PM - 8:00 PM",
+    }));
 
     res.json({
       success: true,
       data: {
         bestTimes,
-        trendingTopics: ["Home workout transformation", "AI creator hacks", "High-converting hooks", "UGC revenue tips"],
       },
     });
   } catch (error) {

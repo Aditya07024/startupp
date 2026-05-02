@@ -27,6 +27,22 @@ npm install
 npm run dev
 ```
 
+## Demo Accounts
+
+Seed a full demo dataset for recruiter/brand, creator, admin, and one extra creator applicant:
+
+```bash
+cd backend
+npm run seed:demo
+```
+
+Demo credentials after seeding:
+
+- Recruiter/Brand: `demo.recruiter@viralboost.local` / `Demo@12345`
+- Creator: `demo.creator@viralboost.local` / `Demo@12345`
+- Admin: `demo.admin@viralboost.local` / `Demo@12345`
+- Extra creator applicant: `demo.applicant@viralboost.local` / `Demo@12345`
+
 ## Notes
 
 - The frontend uses lazy-loaded routes to keep the initial bundle smaller.
