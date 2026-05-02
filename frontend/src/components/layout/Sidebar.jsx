@@ -73,7 +73,7 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <div className="sidebar-logo-icon">V</div>
+        <img src="/logo.png" alt="ViralBoost AI" className="sidebar-logo-image" />
         <span className="sidebar-logo-text">ViralBoost</span>
       </div>
       <nav style={{ flex: 1, overflowY: "auto", padding: "8px 0" }}>

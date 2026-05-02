@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../../components/layout/Header";
 import PageWrapper from "../../components/layout/PageWrapper";
 import StatsCard from "../../components/charts/StatsCard";
+import BarMetricsChart from "../../components/charts/BarMetricsChart";
 import Card from "../../components/ui/Card";
 import { analyticsApi, aiApi, dealsApi, walletApi } from "../../api/services";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -23,6 +24,14 @@ export default function CreatorDashboard() {
     }).catch(() => {});
   }, []);
 
+  const creatorBarData = [
+    { label: "Followers", value: analytics?.followers || 0 },
+    { label: "Engagement", value: Number(analytics?.engagement || 0) * 1000 },
+    { label: "Ideas", value: history.length },
+    { label: "Deals", value: deals.length },
+    { label: "Balance", value: Math.round(wallet.balance || 0) },
+  ];
+
   return (
     <PageWrapper>
       <Header title="Creator Dashboard" subtitle="Daily pulse on growth, earnings, content output, and deal flow." />
@@ -33,25 +42,18 @@ export default function CreatorDashboard() {
         <StatsCard label="Active Deals" value={deals.length} change={3.1} />
       </div>
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card className="p-5">
-          <h2 className="font-display text-xl font-semibold">Recent AI Content</h2>
-          <div className="mt-5 space-y-4">
-            {history.slice(0, 4).map((item) => (
-              <div key={item._id} className="rounded-2xl border border-borderTone bg-bgSecondary p-4">
-                <p className="font-medium">{item.topic}</p>
-                <p className="mt-2 text-sm text-textMuted">{item.caption}</p>
-              </div>
-            ))}
-            {!history.length && <p className="text-sm text-textMuted">No AI content yet.</p>}
-          </div>
-        </Card>
+        <BarMetricsChart title="Creator Performance Mix" data={creatorBarData} />
         <div className="grid gap-6">
           <Card className="p-5">
-            <h2 className="font-display text-xl font-semibold">Quick Actions</h2>
-            <div className="mt-5 grid gap-3">
-              {["AI Reel Ideas", "Reel Analyzer", "Best Time to Post", "Refer & Earn", "Brand Deals", "Multi-Platform Connect"].map((item) => (
-                <div key={item} className="rounded-2xl border border-borderTone bg-bgSecondary px-4 py-3">{item}</div>
+            <h2 className="font-display text-xl font-semibold">Recent AI Content</h2>
+            <div className="mt-5 space-y-4">
+              {history.slice(0, 4).map((item) => (
+                <div key={item._id} className="rounded-2xl border border-borderTone bg-bgSecondary p-4">
+                  <p className="font-medium">{item.topic}</p>
+                  <p className="mt-2 text-sm text-textMuted">{item.caption}</p>
+                </div>
               ))}
+              {!history.length && <p className="text-sm text-textMuted">No AI content yet.</p>}
             </div>
           </Card>
           <Card className="p-5">

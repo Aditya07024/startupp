@@ -28,6 +28,7 @@ const CompetitorWatchPage = lazy(() => import("./pages/Competitor/CompetitorWatc
 const LeaderboardPage = lazy(() => import("./pages/Leaderboard/LeaderboardPage"));
 const PublicProfilePage = lazy(() => import("./pages/Profile/PublicProfilePage"));
 const MediaKitPage = lazy(() => import("./pages/Profile/MediaKitPage"));
+const LandingPage = lazy(() => import("./pages/Landing/LandingPage"));
 
 function PrivateRoute({ children }) {
   const { user } = useAuthStore();
@@ -36,7 +37,7 @@ function PrivateRoute({ children }) {
 
 function RootRedirect() {
   const { user } = useAuthStore();
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/" replace />;
   return <Navigate to={`/dashboard/${user.role}`} replace />;
 }
 
@@ -54,7 +55,8 @@ export default function App() {
     <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-bgPrimary text-textMuted">Loading...</div>}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<RootRedirect />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/app" element={<RootRedirect />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard/creator" element={<PrivateRoute><CreatorDashboard /></PrivateRoute>} />
